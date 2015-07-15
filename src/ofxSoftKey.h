@@ -35,10 +35,12 @@ public:
 	
 	bool isLastInRow;
 	int* padding;
+	int defaultSize;
 	
 	ofxSoftKey(int key, ofBaseApp* testapp);
 
 	ofxSoftKey& setPadding(int top, int right, int bottom, int left);
+	ofxSoftKey& setDefaultSize(int s);
 	ofxSoftKey& padLeft(int left);
 	ofxSoftKey& padRight(int right);
 	
@@ -53,6 +55,7 @@ public:
 	//void setup();
 	//void update();
 	void draw();
+	void draw(ofTrueTypeFont * font);
 	//void exit();
 	
 	//void onRollOver(int x, int y);

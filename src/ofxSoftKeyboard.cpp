@@ -10,7 +10,8 @@
 #include "ofxSoftKeyboard.h"
 
 ofxSoftKeyboard::ofxSoftKeyboard() {
-	
+	keyHeight = 40;
+	drawBitmap = false;
 }
 
 //--------------------------------------------------------------
@@ -22,11 +23,16 @@ ofxSoftKeyboard::~ofxSoftKeyboard() {
 
 //--------------------------------------------------------------
 void ofxSoftKeyboard::setup( ofBaseApp* _testapp, int layout ) {
-	
 	testapp = _testapp;
 	setLayout(layout);
 }
 
+
+//--------------------------------------------------------------
+void ofxSoftKeyboard::setFont(ofTrueTypeFont * f) {
+	font = f;
+	drawBitmap = true;
+}
 
 //--------------------------------------------------------------
 void ofxSoftKeyboard::setLayout(int layout) {
@@ -57,6 +63,15 @@ void ofxSoftKeyboard::setLayout(int layout) {
 			addKey('z'); addKey('x'); addKey('c'); addKey('v'); addKey('b'); addKey('n'); addKey('m'); addKey('.'); addKey('_'); addKey('-'); addKey(OFXSK_KEY_DOTORG); newRow();
 			addKey(' ').padLeft(130).setSize(300, 40);
 			break;
+
+		case OFXSK_LAYOUT_KEYBOARD_SIMPLE:
+			addKey('1').padLeft(30); addKey('2'); addKey('3'); addKey('4'); addKey('5'); addKey('6'); addKey('7'); addKey('8'); addKey('9'); addKey('0'); addKey(OFXSK_KEY_DELETE).setSize(150,keyHeight); newRow();
+			addKey('Q'); addKey('W'); addKey('E'); addKey('R'); addKey('T'); addKey('Y'); addKey('U'); addKey('I'); addKey('O'); addKey('P'); newRow();
+			addKey('A').padLeft(30); addKey('S'); addKey('D'); addKey('F'); addKey('G'); addKey('H'); addKey('J'); addKey('K'); addKey('L'); addKey(OFXSK_KEY_AT); newRow();
+			addKey('Z'); addKey('X'); addKey('C'); addKey('V'); addKey('B'); addKey('N'); addKey('M'); addKey('.'); addKey('_'); addKey('-'); newRow();
+			addKey(' ').padLeft(130).setSize(300, keyHeight);
+			break;
+
 	}
 }
 
@@ -70,6 +85,7 @@ ofxSoftKey& ofxSoftKeyboard::addKey(int c) {
 	
 	ofxSoftKey* key = new ofxSoftKey(c, testapp );
 	key->setPadding(6, 6, 6, 6);
+	key->setDefaultSize(keyHeight);
 	keys.push_back( key );
 	return *keys.back();
 }
@@ -91,7 +107,11 @@ void ofxSoftKeyboard::draw(float x, float y) {
 		xpos += keys[i]->padding[OFXSK_PADDING_LEFT];
 		
 		keys[i]->setPosition(xpos, ypos);
-		keys[i]->draw();
+		if (drawBitmap) {
+			keys[i]->draw(font);
+		} else {
+			keys[i]->draw();
+		}
 		
 		if(keys[i]->isLastInRow) {
 
@@ -108,6 +128,14 @@ void ofxSoftKeyboard::draw(float x, float y) {
 void ofxSoftKeyboard::setPadding(int top, int right, int bottom, int left) {
 	for(auto &key: keys){
 		key->setPadding(top, right, bottom, left);
+	}
+}
+
+//--------------------------------------------------------------
+void ofxSoftKeyboard::setKeyHeight(int s) {
+	keyHeight = s;
+	for(auto &key: keys){
+		key->setDefaultSize(keyHeight);
 	}
 }
 

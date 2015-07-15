@@ -17,6 +17,7 @@
 #define OFXSK_LAYOUT_KEYPAD 1
 #define OFXSK_LAYOUT_KEYBOARD_FULL 2
 #define OFXSK_LAYOUT_KEYBOARD_EMAIL 3
+#define OFXSK_LAYOUT_KEYBOARD_SIMPLE 4
 
 class testApp;
 
@@ -25,6 +26,10 @@ public:
 	ofxSoftKeyboard();
 	~ofxSoftKeyboard();
 
+	int keyHeight;
+	ofTrueTypeFont * font;
+	Boolean drawBitmap;
+
 	void setup( ofBaseApp* testapp, int layout );
 	void setLayout(int layout);
 	void addPadding(int top, int right, int bottom, int left);
@@ -32,8 +37,10 @@ public:
 	void draw(float x, float y);
 	ofxSoftKey& addKey(int c);
 	void newRow();
+	void setFont(ofTrueTypeFont * f);
 
 	void setPadding(int top, int right, int bottom, int left);
+	void setKeyHeight(int s);
 	void setTextColor(ofColor c);
 	void setTextBGColor(ofColor c);
 	void setBorderColor(ofColor c);

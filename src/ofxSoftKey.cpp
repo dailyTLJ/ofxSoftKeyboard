@@ -29,48 +29,49 @@ ofxSoftKey::ofxSoftKey(int _key, ofBaseApp* _testapp) {
 	enableMouseEvents();
 	
 	padding = new int[4];
-	setPadding(5, 5, 5, 5);
+	setPadding(3, 3, 3, 3);
+	defaultSize = 40;
 
 	switch(_key) {
 		case OFXSK_KEY_SHIFT:
 			label = "shift";
-			setSize(115, 40);
+			setSize(115, defaultSize);
 			break;
 		case OFXSK_KEY_TAB: 
 			label = "tab";
-			setSize(70, 40);
+			setSize(70, defaultSize);
 			break;
 		case OFXSK_KEY_CAPS: 
 			label = "caps";
-			setSize(85, 40);
+			setSize(85, defaultSize);
 			break;
 		case OFXSK_KEY_DELETE: 
 			label = "delete";
-			setSize(85, 40);
+			setSize(85, defaultSize);
 			break;
 		case OFXSK_KEY_RETURN: 
 			label = "return";
-			setSize(85, 40);
+			setSize(85, defaultSize);
 			break;
 		case OFXSK_KEY_AT:
 			label = "@";
-			setSize(40, 40);
+			setSize(defaultSize, defaultSize);
 			break;
 		case OFXSK_KEY_DOTCOM:
 			label = ".COM";
-			setSize(40, 40);
+			setSize(defaultSize, defaultSize);
 			break;
 		case OFXSK_KEY_DOTNET:
 			label = ".NET";
-			setSize(40, 40);
+			setSize(defaultSize, defaultSize);
 			break;
 		case OFXSK_KEY_DOTORG:
 			label = ".ORG";
-			setSize(40, 40);
+			setSize(defaultSize, defaultSize);
 			break;
 		default:
 			label = string(1, key);
-			setSize(40, 40);
+			setSize(defaultSize, defaultSize);
 			break;
 	}
 }
@@ -84,6 +85,13 @@ ofxSoftKey& ofxSoftKey::setPadding(int top, int right, int bottom, int left) {
 	padding[OFXSK_PADDING_RIGHT] = right;
 	padding[OFXSK_PADDING_BOTTOM] = bottom;
 	padding[OFXSK_PADDING_LEFT] = left;
+	return *this;
+}
+
+//--------------------------------------------------------------
+ofxSoftKey& ofxSoftKey::setDefaultSize(int s) {
+	defaultSize = s;
+	setSize(defaultSize, defaultSize);
 	return *this;
 }
 
@@ -125,6 +133,25 @@ void ofxSoftKey::draw() {
 
 }
 
+
+void ofxSoftKey::draw(ofTrueTypeFont * font) {
+
+	// Draw the background
+	ofFill();
+	if(isMouseOver()) ofSetColor(hoverColor);
+	else ofSetColor(textBGColor);
+	ofRectRounded(x, y, width, height, roundness);
+	
+	// Draw the outline.
+	ofNoFill();
+	ofSetColor(borderColor);
+	ofRectRounded(x, y, width, height, roundness);
+	
+	// Draw the actual letter
+	ofSetColor(textColor);
+	font->drawString(label, x+10, y+height-10);
+
+}
 
 
 
